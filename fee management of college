@@ -1,0 +1,90 @@
+
+#include <stdio.h>
+
+// Structure to store student information
+typedef struct {
+    char name[50];
+    int rollNumber;
+    float fees;
+} Student;
+
+// Function to add a new student
+void addStudent(Student students[], int *studentCount) {
+    printf("Enter student name: ");
+    scanf("%s", students[*studentCount].name);
+    printf("Enter roll number: ");
+    scanf("%d", &students[*studentCount].rollNumber);
+    printf("Enter fees: ");
+    scanf("%f", &students[*studentCount].fees);
+    (*studentCount)++;
+}
+
+// Function to display student information
+void displayStudents(Student students[], int studentCount) {
+    int i;
+    for (i = 0; i < studentCount; i++) {
+        printf("Student Name: %s\n", students[i].name);
+        printf("Roll Number: %d\n", students[i].rollNumber);
+        printf("Fees: %.2f\n\n", students[i].fees);
+    }
+}
+
+// Function to pay fees
+void payFees(Student students[], int studentCount) {
+    int rollNumber;
+    printf("Enter roll number to pay fees: ");
+    scanf("%d", &rollNumber);
+    int i;
+    for (i = 0; i < studentCount; i++) {
+        if (students[i].rollNumber == rollNumber) {
+            printf("Fees to be paid: %.2f\n", students[i].fees);
+            float amountPaid;
+            printf("Enter amount paid: ");
+            scanf("%f", &amountPaid);
+            if (amountPaid >= students[i].fees) {
+                students[i].fees = 0;
+                printf("Fees paid successfully!\n");
+            } else {
+                students[i].fees -= amountPaid;
+                printf("Partial payment made. Remaining fees: %.2f\n", students[i].fees);
+            }
+            return;
+        }
+    }
+    printf("Student not found!\n");
+}
+
+int main() {
+    Student students[100];
+    int studentCount = 0;
+    int choice;
+
+    while (1) {
+        printf("College Fee Payment System\n");
+        printf("1. Add Student\n");
+        printf("2. Display Students\n");
+        printf("3. Pay Fees\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addStudent(students, &studentCount);
+                break;
+            case 2:
+                displayStudents(students, studentCount);
+                break;
+            case 3:
+                payFees(students, studentCount);
+                break;
+            case 4:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+
+    return 0;
+}
